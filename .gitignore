@@ -1,0 +1,8 @@
+# Dictionary
+/.vscode/
+/.idea/
+/node_modules/
+
+# Files
+
+*.tmp
