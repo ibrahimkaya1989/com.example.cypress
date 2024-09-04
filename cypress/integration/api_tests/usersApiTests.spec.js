@@ -1,9 +1,9 @@
-import { userApiPage } from '../../support/page_object/usersApiService';
+import { userApiService } from '../../support/api_services/usersApiService';
 
-describe('Users Service API Tests', () => {
+describe('Users API Service Tests', () => {
 
     it('GET Request - List Users', () => {
-        userApiPage.getUsers().then((response) => {
+        userApiService.getUsers().then((response) => {
             expect(response.status).to.eq(200);
             expect(response.body).to.have.length(10);
             expect(response.body[0]).to.have.property('name');
@@ -17,13 +17,13 @@ describe('Users Service API Tests', () => {
     });
 
     it('POST Request - New User', () => {
-        const newUser = {
+        const newData = {
             name: 'Bernard Lopez',
             username: 'bernard.lopez',
             email: 'bernard.lopez@typicode.com'
         };
 
-        userApiPage.createUser(newUser).then((response) => {
+        userApiService.createUser(newData).then((response) => {
             expect(response.status).to.eq(201);
             expect(response.body).to.have.property('id');
             expect(response.body.name).to.eq('Bernard Lopez');
@@ -33,14 +33,14 @@ describe('Users Service API Tests', () => {
     });
 
     it('PUT Request - Update User', () => {
-        const newUser = {
+        const newData = {
             id: 1,
             name: 'Bernard Lopez',
             username: 'bernard.lopez',
             email: 'bernard.lopez@typicode.com'
         };
 
-        userApiPage.updateUser(1, newUser).then((response) => {
+        userApiService.updateUser(1, newData).then((response) => {
             expect(response.status).to.eq(200);
             expect(response.body).to.have.property('id');
             expect(response.body.name).to.eq('Bernard Lopez');
@@ -52,7 +52,7 @@ describe('Users Service API Tests', () => {
 
     it('DELETE Request - Delete User', () => {
 
-        userApiPage.deleteUser(1).then((response) => {
+        userApiService.deleteUser(1).then((response) => {
             expect(response.status).to.eq(200);
         });
     });

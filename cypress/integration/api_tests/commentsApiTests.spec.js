@@ -1,6 +1,6 @@
-import { commentsApiService } from '../../support/page_object/commentsApiService';
+import { commentsApiService } from '../../support/api_services/commentsApiService';
 
-describe('Comments Service API Tests', () => {
+describe('Comments API Service Tests', () => {
 
     it('GET Request - List Comments', () => {
         commentsApiService.getComments().then((response) => {
@@ -15,14 +15,14 @@ describe('Comments Service API Tests', () => {
     });
 
     it('POST Request - New Comment', () => {
-        const newComment = {
+        const newData = {
             postId: 1,
             name: "id labore ex et quam laborum",
             email: "Eliseo@gardner.biz",
             body: "laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium"
         };
 
-        commentsApiService.createComment(newComment).then((response) => {
+        commentsApiService.createComment(newData).then((response) => {
             expect(response.status).to.eq(201);
             expect(response.body).to.have.property('postId');
             expect(response.body).to.have.property('id');
@@ -34,7 +34,7 @@ describe('Comments Service API Tests', () => {
     });
 
     it('PUT Request - Update Comment', () => {
-        const newComment = {
+        const newData = {
             id: 1,
             postId: 1,
             name: "id labore ex et quam laborum",
@@ -42,7 +42,7 @@ describe('Comments Service API Tests', () => {
             body: "laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium"
         };
 
-        commentsApiService.updateComment(1, newComment).then((response) => {
+        commentsApiService.updateComment(1, newData).then((response) => {
             expect(response.status).to.eq(200);
             expect(response.body).to.have.property('postId');
             expect(response.body).to.have.property('id');

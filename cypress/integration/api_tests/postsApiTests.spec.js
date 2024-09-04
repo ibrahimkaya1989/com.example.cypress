@@ -1,9 +1,9 @@
-import { postsApiPage } from '../../support/page_object/postsApiService';
+import { postsApiService } from '../../support/api_services/postsApiService';
 
-describe('Posts Service API Tests', () => {
+describe('Posts API Service Tests', () => {
 
     it('GET Request - List Posts', () => {
-        postsApiPage.getPosts().then((response) => {
+        postsApiService.getPosts().then((response) => {
             expect(response.status).to.eq(200);
             expect(response.body).to.have.length(100);
             expect(response.body[0]).to.have.property('userId');
@@ -14,13 +14,13 @@ describe('Posts Service API Tests', () => {
     });
 
     it('POST Request - New Post', () => {
-        const newPost = {
+        const newData = {
             userId: 1,
             title: 'quaerat velit veniam amet cupiditate aut numquam ut sequi',
             body: 'in non odio excepturi sint eum\nlabore voluptates vitae quia qui et\ninventore itaque rerum\nveniam non exercitationem delectus aut'
         };
 
-        postsApiPage.createPost(newPost).then((response) => {
+        postsApiService.createPost(newData).then((response) => {
             expect(response.status).to.eq(201);
             expect(response.body).to.have.property('userId');
             expect(response.body).to.have.property('id');
@@ -32,14 +32,14 @@ describe('Posts Service API Tests', () => {
     });
 
     it('PUT Request - Update Post', () => {
-        const newPost = {
+        const newData = {
             userId: 1,
             id: 1,
             title: 'quaerat velit veniam amet cupiditate aut numquam ut sequi',
             body: 'in non odio excepturi sint eum\nlabore voluptates vitae quia qui et\ninventore itaque rerum\nveniam non exercitationem delectus aut'
         };
 
-        postsApiPage.updatePost(1, newPost).then((response) => {
+        postsApiService.updatePost(1, newData).then((response) => {
             expect(response.status).to.eq(200);
             expect(response.body).to.have.property('userId');
             expect(response.body).to.have.property('id');
@@ -53,7 +53,7 @@ describe('Posts Service API Tests', () => {
 
     it('DELETE Request - Delete Post', () => {
 
-        postsApiPage.deletePost(1).then((response) => {
+        postsApiService.deletePost(1).then((response) => {
             expect(response.status).to.eq(200);
         });
     });
