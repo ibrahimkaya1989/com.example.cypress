@@ -1,11 +1,88 @@
+# Cypress Test Suite
+
+Cypress-based end-to-end and API test project. The suite contains Cypress example tests, JSONPlaceholder API tests, Google search tests, and Softpos portal/API tests.
+
+## Requirements
+
+- Node.js `>=22`
+- npm `>=11`
+- Network access for tests that use external services
+- Valid test environment credentials for Softpos tests
+
 ## Install
+
 ```bash
+npm install
 npm install cypress --save-dev
 npm install mochawesome mochawesome-merge mochawesome-report-generator --save-dev
 ```
+
 ## Run
+
+The following commands are kept as the standard project run commands:
+
 ```bash
 npx cypress run
 npx cypress open
 npx cypress open --browser electron
 ```
+
+Equivalent npm scripts are also available:
+
+```bash
+npm test
+npm run test:open
+npm run test:headed
+npm run test:api
+npm run test:softpos
+```
+
+## Project Structure
+
+```text
+.
+├── cypress.config.js              # Cypress and Mochawesome configuration
+├── cypress.env.json               # Local test environment values
+├── cypress/
+│   ├── e2e/                        # Cypress example and e2e specs
+│   ├── integration/               # API, Google, and Softpos specs
+│   ├── fixtures/                   # Test data files
+│   ├── support/
+│   │   ├── api_services/           # Reusable API service objects
+│   │   ├── softpos/                # Softpos API helpers
+│   │   ├── commands.js             # Custom Cypress commands
+│   │   └── e2e.js                  # Global support setup
+│   ├── reports/                    # Mochawesome JSON and HTML reports
+│   ├── screenshots/                # Screenshots from failed tests
+│   └── downloads/                 # Files downloaded during tests
+├── package.json
+├── package-lock.json
+└── Readme.md
+```
+
+## Test Groups
+
+- **API tests:** CRUD scenarios for JSONPlaceholder resources.
+- **E2E examples:** Cypress command and browser interaction examples under `cypress/e2e`.
+- **Google tests:** Search workflow tests against Google.
+- **Softpos tests:** Portal login and OAuth token tests against the Softpos test environment.
+
+The configured default spec pattern is `cypress/integration/**/*.spec.js`. Run the `cypress/e2e` examples explicitly when they are needed.
+
+## Reports
+
+Test runs generate Mochawesome JSON files in `cypress/reports`. Generate the consolidated HTML report with:
+
+```bash
+npm run report
+```
+
+Failed browser tests may create screenshots in `cypress/screenshots`.
+
+## Environment Variables
+
+Keep credentials and environment-specific values outside source control. Use a local `cypress.env.json` file or CI environment variables, and never commit real passwords, tokens, or authorization headers.
+
+## Versioning
+
+Project versions use the `YYYY.MM.COUNT` format, for example `2026.10.1`.
