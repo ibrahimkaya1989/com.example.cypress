@@ -43,7 +43,8 @@ npm run test:softpos
 ```text
 .
 ├── cypress.config.js              # Cypress and Mochawesome configuration
-├── cypress.env.json               # Local test environment values
+├── cypress.env.example.json       # Safe environment template
+├── cypress.env.json               # Local-only environment values (ignored)
 ├── cypress/
 │   ├── e2e/                        # Cypress example and e2e specs
 │   ├── integration/               # API, Google, and Softpos specs
@@ -82,7 +83,13 @@ Failed browser tests may create screenshots in `cypress/screenshots`.
 
 ## Environment Variables
 
-Keep credentials and environment-specific values outside source control. Use a local `cypress.env.json` file or CI environment variables, and never commit real passwords, tokens, or authorization headers.
+Copy `cypress.env.example.json` to `cypress.env.json` and replace its placeholders with test-only values. Keep credentials and environment-specific values outside source control, and never commit real passwords, tokens, or authorization headers.
+
+The default CI workflow runs API and Cypress example tests. Google and Softpos tests require external access and credentials, so they remain explicit local commands unless a protected CI environment is configured.
+
+## Continuous Integration
+
+GitHub Actions runs `npm ci` and `npm test` on pushes and pull requests targeting `main`. Reports and failure screenshots are uploaded as workflow artifacts when they are generated.
 
 ## Versioning
 

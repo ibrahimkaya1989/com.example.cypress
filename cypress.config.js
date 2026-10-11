@@ -14,11 +14,22 @@ const runCommand = (command, args) => new Promise((resolve, reject) => {
   });
 });
 
+const reportsDirectory = path.resolve('cypress/reports');
+
+const cleanReports = () => {
+  fs.mkdirSync(reportsDirectory, { recursive: true });
+
+  fs.readdirSync(reportsDirectory)
+    .filter((file) => /^mochawesome_.*\.json$/.test(file) || /^report(?:\.html|\.json)$/.test(file))
+    .forEach((file) => fs.rmSync(path.join(reportsDirectory, file), { force: true }));
+};
+
 module.exports = defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
+      on('before:run', cleanReports);
+
       on('after:run', async () => {
-        const reportsDirectory = path.resolve('cypress/reports');
         const reportFiles = fs.readdirSync(reportsDirectory)
           .filter((file) => /^mochawesome_.*\.json$/.test(file))
           .map((file) => path.join(reportsDirectory, file));
