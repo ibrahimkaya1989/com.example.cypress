@@ -3,6 +3,8 @@
 /.idea/
 /node_modules/
 /cypress/reports/
+/cypress/screenshots/
+/cypress.env.json
 
 # Files
 

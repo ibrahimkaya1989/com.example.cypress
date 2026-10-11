@@ -1,15 +1,40 @@
 const { defineConfig } = require('cypress');
+const fs = require('fs');
+const path = require('path');
+const { execFile } = require('child_process');
+
+const runCommand = (command, args) => new Promise((resolve, reject) => {
+  execFile(command, args, { windowsHide: true }, (error, stdout, stderr) => {
+    if (error) {
+      reject(new Error(stderr || error.message));
+      return;
+    }
+
+    resolve(stdout);
+  });
+});
 
 module.exports = defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
-      // Mochawesome raporlarının oluşturulması için event listener ekleyin
-      on('after:run', (results) => {
-        const { exec } = require('child_process');
-        exec('npx mochawesome-merge cypress/reports/*.json > cypress/reports/report.json && npx marge cypress/reports/report.json -o cypress/reports');
+      on('after:run', async () => {
+        const reportsDirectory = path.resolve('cypress/reports');
+        const reportFiles = fs.readdirSync(reportsDirectory)
+          .filter((file) => /^mochawesome_.*\.json$/.test(file))
+          .map((file) => path.join(reportsDirectory, file));
+
+        if (!reportFiles.length) {
+          return;
+        }
+
+        const npxCommand = process.platform === 'win32' ? 'npx.cmd' : 'npx';
+        const mergedReport = await runCommand(npxCommand, ['mochawesome-merge', ...reportFiles]);
+        const reportPath = path.join(reportsDirectory, 'report.json');
+
+        fs.writeFileSync(reportPath, mergedReport);
+        await runCommand(npxCommand, ['marge', reportPath, '-o', reportsDirectory]);
       });
     },
-    // Raporları kaydetmek için reporter ayarı
     reporter: 'mochawesome',
     reporterOptions: {
       reportDir: 'cypress/reports',
@@ -17,6 +42,9 @@ module.exports = defineConfig({
       html: false,
       json: true
     },
-    specPattern: 'cypress/integration/**/*.spec.js', // Test dosyalarının konumu
+    specPattern: [
+      'cypress/integration/api_tests/**/*.spec.js',
+      'cypress/e2e/**/*.cy.js'
+    ],
   },
 });

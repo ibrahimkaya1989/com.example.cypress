@@ -34,6 +34,7 @@ npm test
 npm run test:open
 npm run test:headed
 npm run test:api
+npm run test:google
 npm run test:softpos
 ```
 
@@ -67,7 +68,7 @@ npm run test:softpos
 - **Google tests:** Search workflow tests against Google.
 - **Softpos tests:** Portal login and OAuth token tests against the Softpos test environment.
 
-The configured default spec pattern is `cypress/integration/**/*.spec.js`. Run the `cypress/e2e` examples explicitly when they are needed.
+The default run includes API tests and Cypress examples under `cypress/e2e`. Google and Softpos tests depend on external environments and should be run explicitly with their dedicated npm scripts.
 
 ## Reports
 

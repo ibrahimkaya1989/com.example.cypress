@@ -8,6 +8,7 @@
     "test:open": "cypress open",
     "test:headed": "cypress run --headed --browser electron",
     "test:api": "cypress run --spec \"cypress/integration/api_tests/**/*.spec.js\"",
+    "test:google": "cypress run --spec \"cypress/integration/google/**/*.spec.js\"",
     "test:softpos": "cypress run --spec \"cypress/integration/softpos/**/*.spec.js\"",
     "report": "marge cypress/reports/report.json -o cypress/reports"
   },
