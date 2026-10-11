@@ -1,28 +1,28 @@
 class TokenService {
 
     constructor() {
-        this.baseUrl = 'https://softpostest.paycore.com/uaa/oauth/token';
+        this.baseUrl = Cypress.expose('softposTokenUrl');
     }
 
     token() {
-        return cy.request({
+        return cy.env(['authorization', 'credentials']).then(({ authorization, credentials }) => cy.request({
             method: 'POST',
             url: this.baseUrl,
             headers: {
-                authorization: Cypress.env('authorization'),
+                authorization,
                 "Content-Type": 'application/json',
             },
             auth: {
-                username: Cypress.env('credentials').username,
-                password: Cypress.env('credentials').password,
+                username: credentials.username,
+                password: credentials.password,
             },
             form: true,
             body: {
-                username: Cypress.env('credentials').username,
-                password: Cypress.env('credentials').password,
+                username: credentials.username,
+                password: credentials.password,
                 grant_type: 'password',
             }
-        });
+        }));
     }
 }
 

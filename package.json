@@ -4,21 +4,23 @@
   "private": true,
   "description": "Cypress end-to-end and API test suite",
   "scripts": {
-    "test": "cypress run",
-    "test:open": "cypress open",
-    "test:headed": "cypress run --headed --browser electron",
-    "test:api": "cypress run --spec \"cypress/integration/api_tests/**/*.spec.js\"",
-    "test:google": "cypress run --spec \"cypress/integration/google/**/*.spec.js\"",
-    "test:softpos": "cypress run --spec \"cypress/integration/softpos/**/*.spec.js\"",
+    "test": "cypress run --browser chrome",
+    "test:open": "cypress open --browser chrome",
+    "test:headed": "cypress run --headed --browser chrome",
+    "test:api": "cypress run --browser chrome --spec \"cypress/integration/api_tests/**/*.spec.js\"",
+    "test:e2e": "cypress run --browser chrome --spec \"cypress/e2e/**/*.cy.js\"",
+    "test:google": "cypress run --browser chrome --config specPattern=\"cypress/integration/google/**/*.spec.js\" --spec \"cypress/integration/google/**/*.spec.js\"",
+    "test:softpos": "cypress run --browser chrome --config specPattern=\"cypress/integration/softpos/**/*.spec.js\" --spec \"cypress/integration/softpos/**/*.spec.js\"",
+    "test:external": "npm run test:google && npm run test:softpos",
     "report": "marge cypress/reports/report.json -o cypress/reports"
   },
   "engines": {
     "node": ">=22"
   },
   "devDependencies": {
-    "cypress": "^16.1.1",
-    "mochawesome": "^8.1.1",
-    "mochawesome-merge": "^5.1.1",
-    "mochawesome-report-generator": "^6.3.2"
+    "cypress": "16.1.1",
+    "mochawesome": "8.1.1",
+    "mochawesome-merge": "5.1.1",
+    "mochawesome-report-generator": "6.3.2"
   }
 }

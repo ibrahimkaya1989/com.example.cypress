@@ -2,7 +2,7 @@ import { tokenService } from '../../../support/softpos/tokenService';
 
 describe('Token API Service Tests', () => {
 
-    it('GET Token Request', () => {
+    it('POST Token Request', () => {
 
         tokenService.token().then((response) => {
             expect(response.status).to.eq(200);

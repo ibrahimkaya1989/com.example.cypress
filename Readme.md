@@ -13,8 +13,6 @@ Cypress-based end-to-end and API test project. The suite contains Cypress exampl
 
 ```bash
 npm install
-npm install cypress --save-dev
-npm install mochawesome mochawesome-merge mochawesome-report-generator --save-dev
 ```
 
 ## Run
@@ -22,9 +20,8 @@ npm install mochawesome mochawesome-merge mochawesome-report-generator --save-de
 The following commands are kept as the standard project run commands:
 
 ```bash
-npx cypress run
-npx cypress open
-npx cypress open --browser electron
+npx cypress run --browser chrome
+npx cypress open --browser chrome
 ```
 
 Equivalent npm scripts are also available:
@@ -34,9 +31,13 @@ npm test
 npm run test:open
 npm run test:headed
 npm run test:api
+npm run test:e2e
 npm run test:google
 npm run test:softpos
+npm run test:external
 ```
+
+Chrome is the standard test browser. Electron can still be selected explicitly with `--browser electron` when compatibility testing is required.
 
 ## Project Structure
 
@@ -73,17 +74,19 @@ The default run includes API tests and Cypress examples under `cypress/e2e`. Goo
 
 ## Reports
 
-Test runs generate Mochawesome JSON files in `cypress/reports`. Generate the consolidated HTML report with:
+Test runs generate Mochawesome JSON and HTML files in `cypress/reports`. These files are local/CI artifacts and are intentionally excluded from Git. Generate the consolidated HTML report with:
 
 ```bash
 npm run report
 ```
 
-Failed browser tests may create screenshots in `cypress/screenshots`.
+Failed browser tests may create screenshots in `cypress/screenshots`; CI uploads reports and screenshots as workflow artifacts.
 
 ## Environment Variables
 
 Copy `cypress.env.example.json` to `cypress.env.json` and replace its placeholders with test-only values. Keep credentials and environment-specific values outside source control, and never commit real passwords, tokens, or authorization headers.
+
+Override service URLs with `API_BASE_URL`, `GOOGLE_URL`, `SOFTPOS_LOGIN_URL`, and `SOFTPOS_TOKEN_URL` when running against another environment.
 
 The default CI workflow runs API and Cypress example tests. Google and Softpos tests require external access and credentials, so they remain explicit local commands unless a protected CI environment is configured.
 

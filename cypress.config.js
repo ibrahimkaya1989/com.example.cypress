@@ -4,7 +4,7 @@ const path = require('path');
 const { execFile } = require('child_process');
 
 const runCommand = (command, args) => new Promise((resolve, reject) => {
-  execFile(command, args, { windowsHide: true }, (error, stdout, stderr) => {
+  execFile(command, args, { windowsHide: true, shell: true }, (error, stdout, stderr) => {
     if (error) {
       reject(new Error(stderr || error.message));
       return;
@@ -26,7 +26,34 @@ const cleanReports = () => {
 
 module.exports = defineConfig({
   e2e: {
+    expose: {
+      apiBaseUrl: process.env.API_BASE_URL || 'https://jsonplaceholder.typicode.com',
+      googleUrl: process.env.GOOGLE_URL || 'https://www.google.com',
+      softposLoginUrl: process.env.SOFTPOS_LOGIN_URL || 'https://softpostest.paycore.com/uaa/login',
+      softposTokenUrl: process.env.SOFTPOS_TOKEN_URL || 'https://softpostest.paycore.com/uaa/oauth/token'
+    },
     setupNodeEvents(on, config) {
+      on('task', {
+        executeCommand(command) {
+          return new Promise((resolve, reject) => {
+            require('child_process').exec(command, (error, stdout, stderr) => {
+              if (error) {
+                reject(new Error(stderr || error.message));
+                return;
+              }
+
+              resolve({ code: 0, stdout, stderr });
+            });
+          });
+        },
+        readFile(filePath) {
+          return fs.readFileSync(filePath, 'utf8');
+        },
+        workingDirectory() {
+          return process.cwd();
+        }
+      });
+
       on('before:run', cleanReports);
 
       on('after:run', async () => {

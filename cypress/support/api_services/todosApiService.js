@@ -1,7 +1,7 @@
 class TodosApiService {
     
     constructor() {
-        this.baseUrl = 'https://jsonplaceholder.typicode.com';
+        this.baseUrl = Cypress.expose('apiBaseUrl');
     }
 
     getRequest() {
